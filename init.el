@@ -7,8 +7,8 @@
    [default default default italic underline success warning error])
  '(custom-enabled-themes '(misterioso))
  '(inhibit-startup-screen t)
- '(package-selected-packages
-))
+ '(package-selected-packages)
+)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -30,58 +30,64 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-
-; meow wolfram evil hydra ace-window ivy
-(straight-use-package 'use-package)
+; vertico wolfram hydra ace-window ivy savehist
+(straight-use-package 'savehist)
 (straight-use-package 'diff-hl)
 (straight-use-package 'expand-region)
 (straight-use-package 'move-text)
-(straight-use-package 'avy)
 (straight-use-package 'undo-tree)
-(straight-use-package 'swiper)
-(straight-use-package 'selectrum-prescient)
+(straight-use-package 'avy)
+(straight-use-package 'ctrlf)
+(straight-use-package 'vertico)
+(straight-use-package 'vertico-prescient)
 (straight-use-package 'god-mode)
+(straight-use-package 'meow)
 (straight-use-package 'xelb)
 (straight-use-package 'exwm)
 (straight-use-package 'exwm-x)
 (straight-use-package 'lsp-mode)
-(straight-use-package 'kakoune)
 (straight-use-package 'rust-mode)
 (straight-use-package 'auctex)
 (straight-use-package 'lean-mode)
 (straight-use-package 'company-lean)
-;; (use-package lean4-mode
-;;   :straight (lean4-mode :type git :host github :repo "leanprover/lean4-mode")
-;;   ;; to defer loading the package until required
-;;   :commands (lean4-mode))
+(straight-use-package 'use-package)
+(use-package lean4-mode
+  :straight (lean4-mode
+	     :type git
+	     :host github
+	     :repo "leanprover/lean4-mode"
+	     :files ("*.el" "data"))
+  ;; to defer loading the package until required
+  :commands (lean4-mode))
 
 
 ;(require 'exwm)
 ;(require 'exwm-config)
 ;(exwm-config-default) ;Prevents files from opening properly if enabled
-
-
-(undo-tree-mode 1)
-(selectrum-mode 1)
-(selectrum-prescient-mode)
-(xterm-mouse-mode)
-(menu-bar-mode 1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(god-mode)
-(show-paren-mode 1)
-
-
+;(setq warning-minimum-level :error) ;For silencing exwm warnings on startup
 (add-to-list 'exec-path "~/.local/bin")
+(setq frame-title-format "%b")
 (setq mouse-autoselect-window t)
 (setq x-select-enable-clipboard t)
-(setq warning-minimum-level :error) ;For silencing exwm warnings on startup
+(setq enable-recursive-minibuffers t)
 ;(setq lsp-tex-server 'digestif)
 
 
-(global-set-key (kbd "C-s") 'swiper-all)
-(global-set-key [M-down] 'move-text-down)
-(global-set-key [M-up] 'move-text-up)
+(xterm-mouse-mode 1)
+(menu-bar-mode 1)
+(show-paren-mode 1)
+(ctrlf-mode 1)
+(vertico-mode 1)
+(vertico-prescient-mode 1)
+(god-mode)
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+
+(global-set-key (kbd "M-<down>") 'move-text-down)
+(global-set-key (kbd "M-<up>") 'move-text-up)
 (global-set-key (kbd "S-SPC") #'god-local-mode)
 (global-set-key (kbd "C-;") 'avy-goto-char)
-(global-set-key (kbd "C-:") 'keyboard-quit)
+(global-set-key (kbd "<escape> SPC") 'keyboard-quit)
+(global-set-key (kbd "C-.") 'repeat)
