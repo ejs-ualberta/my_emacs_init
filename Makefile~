@@ -1,9 +1,0 @@
-conf_dir = ~/.emacs.d
-file = ./init.el
-
-dir:
-	[ -d $(conf_dir) ] || mkdir $(conf_dir)
-	cp $(file) $(conf_dir)
-
-home:
-	cp $(file) ~
