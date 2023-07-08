@@ -1,11 +1,12 @@
 conf_dir = ~/.emacs.d
-file = ./init.el
+file = init.el
+install_path = ${conf_dir}"/"${file}
 
 dir:
-	[ -d $(conf_dir) ] || mkdir $(conf_dir)
-	[ -d $(conf_dir)/$(file) ] || mv $(conf_dir)/$(file) $(conf_dir)/$(file).old
-	cp $(file) $(conf_dir)
+	[ -e ${conf_dir} ] || mkdir ${conf_dir}
+	[ ! -e ${install_path} ] || mv ${install_path} ${install_path}".old"
+	cp ./${file} ${conf_dir}
 
 home:
-	[ -d ~/$(file) ] || mv ~/$(file) ~/$(file).old
-	cp $(file) ~
+	[ ! -e ~/${file} ] || mv ~/${file} ~/${file}".old"
+	cp ./$(file) ~
