@@ -30,7 +30,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-; vertico wolfram hydra ace-window ivy savehist
+; wolfram hydra ace-window ivy savehist
 (straight-use-package 'savehist)
 (straight-use-package 'diff-hl)
 (straight-use-package 'expand-region)
@@ -45,6 +45,7 @@
 (straight-use-package 'xelb)
 (straight-use-package 'exwm)
 (straight-use-package 'exwm-x)
+(straight-use-package 'magit)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'rust-mode)
 (straight-use-package 'auctex)
@@ -65,7 +66,6 @@
 ;(require 'exwm-config)
 ;(exwm-config-default) ;Prevents files from opening properly if enabled
 ;(setq warning-minimum-level :error) ;For silencing exwm warnings on startup
-(add-to-list 'exec-path "~/.local/bin")
 (setq frame-title-format "%b")
 (setq mouse-autoselect-window t)
 (setq x-select-enable-clipboard t)
@@ -87,7 +87,7 @@
 
 (global-set-key (kbd "M-<down>") 'move-text-down)
 (global-set-key (kbd "M-<up>") 'move-text-up)
-(global-set-key (kbd "S-SPC") #'god-local-mode)
+(global-set-key (kbd "<escape> f") #'god-local-mode)
 (global-set-key (kbd "C-;") 'avy-goto-char)
-(global-set-key (kbd "<escape> SPC") 'keyboard-quit)
+(global-set-key (kbd "<escape> g") 'keyboard-quit)
 (global-set-key (kbd "C-.") 'repeat)
