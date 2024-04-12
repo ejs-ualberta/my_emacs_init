@@ -16,7 +16,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -30,7 +29,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-; wolfram hydra ace-window ivy savehist
+; wolfram hydra ace-window ivy
 (straight-use-package 'savehist)
 (straight-use-package 'diff-hl)
 (straight-use-package 'expand-region)
@@ -44,7 +43,7 @@
 (straight-use-package 'meow)
 (straight-use-package 'xelb)
 (straight-use-package 'exwm)
-(straight-use-package 'exwm-x)
+;(straight-use-package 'exwm-x)
 (straight-use-package 'magit)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'rust-mode)
@@ -62,16 +61,21 @@
   :commands (lean4-mode))
 
 
-;(require 'exwm)
-;(require 'exwm-config)
-;(exwm-config-default) ;Prevents files from opening properly if enabled
-;(setq warning-minimum-level :error) ;For silencing exwm warnings on startup
+(when (string= (getenv "GDMSESSION") "exwm")
+  (require 'exwm)
+  (require 'exwm-config)
+  (require 'exwm-randr)
+  (exwm-config-default) ;Prevents files from opening properly within other WMs
+  (exwm-randr-enable)
+  (shell-command ; Generated with arandr
+   "xrandr --output LVDS-1 --primary --mode 1366x768 --pos 0x1152 --rotate normal --output VGA-1 --off --output HDMI-1 --mode 1920x1080 --pos 1366x0 --rotate left --output DP-1 --off --output HDMI-2 --off --output HDMI-3 --off --output DP-2 --off --output DP-3 --off")
+  (setq exwm-randr-workspace-monitor-plist '(2 "HDMI-1" 3 "HDMI-1")) ; 0, 1 on lvds and 2, 3 on hdmi
+)
+
 (setq frame-title-format "%b")
 (setq mouse-autoselect-window t)
 (setq x-select-enable-clipboard t)
 (setq enable-recursive-minibuffers t)
-;(setq lsp-tex-server 'digestif)
-
 
 (xterm-mouse-mode 1)
 (menu-bar-mode 1)
@@ -84,10 +88,9 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-
 (global-set-key (kbd "M-<down>") 'move-text-down)
 (global-set-key (kbd "M-<up>") 'move-text-up)
 (global-set-key (kbd "<escape> f") #'god-local-mode)
-(global-set-key (kbd "C-;") 'avy-goto-char)
 (global-set-key (kbd "<escape> g") 'keyboard-quit)
+(global-set-key (kbd "C-;") 'avy-goto-char)
 (global-set-key (kbd "C-.") 'repeat)
