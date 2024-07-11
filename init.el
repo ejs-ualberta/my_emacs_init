@@ -16,6 +16,7 @@
  ;; If there is more than one, they won't work right.
  )
 
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -28,6 +29,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
 
 ; wolfram hydra ace-window ivy
 (straight-use-package 'savehist)
@@ -72,10 +74,12 @@
   (setq exwm-randr-workspace-monitor-plist '(2 "HDMI-1" 3 "HDMI-1")) ; 0, 1 on lvds and 2, 3 on hdmi
 )
 
+
 (setq frame-title-format "%b")
 (setq mouse-autoselect-window t)
 (setq x-select-enable-clipboard t)
 (setq enable-recursive-minibuffers t)
+
 
 (xterm-mouse-mode 1)
 (menu-bar-mode 1)
@@ -88,9 +92,13 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+
 (global-set-key (kbd "M-<down>") 'move-text-down)
 (global-set-key (kbd "M-<up>") 'move-text-up)
-(global-set-key (kbd "<escape> f") #'god-local-mode)
-(global-set-key (kbd "<escape> g") 'keyboard-quit)
+(global-set-key (kbd "<escape> f") 'god-local-mode)
+(global-set-key (kbd "<escape> g") 'keyboard-escape-quit)
 (global-set-key (kbd "C-;") 'avy-goto-char)
 (global-set-key (kbd "C-.") 'repeat)
+
+(global-unset-key (kbd "C-z"))
+
