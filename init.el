@@ -50,8 +50,6 @@
 (straight-use-package 'lsp-mode)
 (straight-use-package 'rust-mode)
 (straight-use-package 'auctex)
-(straight-use-package 'lean-mode)
-(straight-use-package 'company-lean)
 (straight-use-package 'use-package)
 (use-package lean4-mode
   :straight (lean4-mode
