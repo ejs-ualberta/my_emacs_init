@@ -52,13 +52,10 @@
 (straight-use-package 'auctex)
 (straight-use-package 'use-package)
 (use-package lean4-mode
-  :straight (lean4-mode
-	     :type git
-	     :host github
-	     :repo "leanprover/lean4-mode"
-	     :files ("*.el" "data"))
-  ;; to defer loading the package until required
-  :commands (lean4-mode))
+  :commands lean4-mode
+  :straight (lean4-mode :type git :host github
+                        :repo "leanprover-community/lean4-mode"
+                        :files ("*.el" "data")))
 
 
 (when (string= (getenv "GDMSESSION") "exwm")
