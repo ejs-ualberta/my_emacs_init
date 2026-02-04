@@ -45,32 +45,17 @@
 (straight-use-package 'vertico)
 (straight-use-package 'vertico-prescient)
 (straight-use-package 'god-mode)
-(straight-use-package 'meow)
-(straight-use-package 'xelb)
+;(straight-use-package 'meow)
 (straight-use-package 'exwm)
-;(straight-use-package 'exwm-x)
 (straight-use-package 'magit)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'rust-mode)
 (straight-use-package 'auctex)
-(straight-use-package 'use-package)
 (use-package lean4-mode
   :commands lean4-mode
   :straight (lean4-mode :type git :host github
                         :repo "leanprover-community/lean4-mode"
                         :files ("*.el" "data")))
-
-
-(when (string= (getenv "GDMSESSION") "exwm")
-  (require 'exwm)
-  (require 'exwm-config)
-  (require 'exwm-randr)
-  (exwm-config-default) ;Prevents files from opening properly within other WMs
-  (exwm-randr-enable)
-  (shell-command ; Generated with arandr
-   "xrandr --output LVDS-1 --primary --mode 1366x768 --pos 0x1152 --rotate normal --output VGA-1 --off --output HDMI-1 --mode 1920x1080 --pos 1366x0 --rotate left --output DP-1 --off --output HDMI-2 --off --output HDMI-3 --off --output DP-2 --off --output DP-3 --off")
-  (setq exwm-randr-workspace-monitor-plist '(2 "HDMI-1" 3 "HDMI-1")) ; 0, 1 on lvds and 2, 3 on hdmi
-)
 
 
 (setq frame-title-format "%b")
@@ -85,7 +70,7 @@
 (ctrlf-mode 1)
 (vertico-mode 1)
 (vertico-prescient-mode 1)
-(god-mode)
+;(god-mode)
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -100,3 +85,59 @@
 
 (global-unset-key (kbd "C-z"))
 
+
+(when (string= (getenv "GDMSESSION") "exwm")
+  ; Based on the exwm minimal configuration.
+
+  (require 'exwm)
+  ;(require 'exwm-randr)
+
+  (setq exwm-workspace-number 4)
+  ; Leave workspaces 0, 1 on lvds and put workspaces 2, 3 on hdmi.
+  ;(setq exwm-randr-workspace-monitor-plist '(2 "HDMI-1" 3 "HDMI-1"))
+
+  (add-hook 'exwm-update-class-hook
+	    (lambda () (exwm-workspace-rename-buffer exwm-class-name)))
+  
+  ;; Global keybindings.
+  (setq exwm-input-global-keys
+	`(([?\s-r] . exwm-reset) ;; s-r: Reset (to line-mode).
+          ([?\s-w] . exwm-workspace-switch) ;; s-w: Switch workspace.
+          ([?\s-&] . (lambda (cmd) ;; s-&: Launch application.
+                       (interactive (list (read-shell-command "$ ")))
+                       (start-process-shell-command cmd nil cmd)))
+          ;; s-N: Switch to certain workspace.
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+			(lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))))
+
+  (setq exwm-input-simulation-keys
+      '(
+        ;; movement
+        ([?\C-b] . [left])
+        ([?\M-b] . [C-left])
+        ([?\C-f] . [right])
+        ([?\M-f] . [C-right])
+        ([?\C-p] . [up])
+        ([?\C-n] . [down])
+        ([?\C-a] . [home])
+        ([?\C-e] . [end])
+        ([?\M-v] . [prior])
+        ([?\C-v] . [next])
+        ([?\C-d] . [delete])
+        ([?\C-k] . [S-end delete])
+        ;; cut/paste.
+        ([?\C-w] . [?\C-x])
+        ([?\M-w] . [?\C-c])
+        ([?\C-y] . [?\C-v])
+        ;; search
+        ([?\C-s] . [?\C-f])))
+
+  (exwm-wm-mode)
+
+  ;(shell-command ; Generated with arandr
+   ;"xrandr --output LVDS-1 --primary --mode 1366x768 --pos 0x1152 --rotate normal --output VGA-1 --off --output HDMI-1 --mode 1920x1080 --pos 1366x0 --rotate left --output DP-1 --off --output HDMI-2 --off --output HDMI-3 --off --output DP-2 --off --output DP-3 --off")
+)
